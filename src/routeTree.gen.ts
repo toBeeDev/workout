@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
+import { Route as NoconRouteImport } from './routes/nocon'
+import { Route as ConRouteImport } from './routes/con'
 import { Route as IndexRouteImport } from './routes/index'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const NoconRoute = NoconRouteImport.update({
+  id: '/nocon',
+  path: '/nocon',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConRoute = ConRouteImport.update({
+  id: '/con',
+  path: '/con',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +31,48 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/con': typeof ConRoute
+  '/nocon': typeof NoconRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/con': typeof ConRoute
+  '/nocon': typeof NoconRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/con': typeof ConRoute
+  '/nocon': typeof NoconRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/con' | '/nocon'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/con' | '/nocon'
+  id: '__root__' | '/' | '/con' | '/nocon'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  ConRoute: typeof ConRoute
+  NoconRoute: typeof NoconRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/nocon': {
+      id: '/nocon'
+      path: '/nocon'
+      fullPath: '/nocon'
+      preLoaderRoute: typeof NoconRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/con': {
+      id: '/con'
+      path: '/con'
+      fullPath: '/con'
+      preLoaderRoute: typeof ConRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,7 +87,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  ConRoute: ConRoute,
+  NoconRoute: NoconRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
