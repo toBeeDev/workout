@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SuspenseRouteImport } from './routes/suspense'
 import { Route as NoconRouteImport } from './routes/nocon'
 import { Route as ConRouteImport } from './routes/con'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SuspenseRoute = SuspenseRouteImport.update({
+  id: '/suspense',
+  path: '/suspense',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NoconRoute = NoconRouteImport.update({
   id: '/nocon',
   path: '/nocon',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/con': typeof ConRoute
   '/nocon': typeof NoconRoute
+  '/suspense': typeof SuspenseRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/con': typeof ConRoute
   '/nocon': typeof NoconRoute
+  '/suspense': typeof SuspenseRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/con': typeof ConRoute
   '/nocon': typeof NoconRoute
+  '/suspense': typeof SuspenseRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/con' | '/nocon'
+  fullPaths: '/' | '/con' | '/nocon' | '/suspense'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/con' | '/nocon'
-  id: '__root__' | '/' | '/con' | '/nocon'
+  to: '/' | '/con' | '/nocon' | '/suspense'
+  id: '__root__' | '/' | '/con' | '/nocon' | '/suspense'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConRoute: typeof ConRoute
   NoconRoute: typeof NoconRoute
+  SuspenseRoute: typeof SuspenseRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/suspense': {
+      id: '/suspense'
+      path: '/suspense'
+      fullPath: '/suspense'
+      preLoaderRoute: typeof SuspenseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/nocon': {
       id: '/nocon'
       path: '/nocon'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConRoute: ConRoute,
   NoconRoute: NoconRoute,
+  SuspenseRoute: SuspenseRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
