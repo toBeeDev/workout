@@ -13,6 +13,9 @@ export default function Header() {
         <div className="px-2 font-bold">
           <Link to="/nocon">NoCon</Link>
         </div>
+        <div className="px-2 font-bold">
+          <Link to="/suspense">Suspense</Link>
+        </div>
       </nav>
     </header>
   )
