@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SuspenseRouteImport } from './routes/suspense'
+import { Route as StateRouteImport } from './routes/state'
 import { Route as NoconRouteImport } from './routes/nocon'
 import { Route as ConRouteImport } from './routes/con'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const SuspenseRoute = SuspenseRouteImport.update({
   id: '/suspense',
   path: '/suspense',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StateRoute = StateRouteImport.update({
+  id: '/state',
+  path: '/state',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NoconRoute = NoconRouteImport.update({
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/con': typeof ConRoute
   '/nocon': typeof NoconRoute
+  '/state': typeof StateRoute
   '/suspense': typeof SuspenseRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/con': typeof ConRoute
   '/nocon': typeof NoconRoute
+  '/state': typeof StateRoute
   '/suspense': typeof SuspenseRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/con': typeof ConRoute
   '/nocon': typeof NoconRoute
+  '/state': typeof StateRoute
   '/suspense': typeof SuspenseRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/con' | '/nocon' | '/suspense'
+  fullPaths: '/' | '/con' | '/nocon' | '/state' | '/suspense'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/con' | '/nocon' | '/suspense'
-  id: '__root__' | '/' | '/con' | '/nocon' | '/suspense'
+  to: '/' | '/con' | '/nocon' | '/state' | '/suspense'
+  id: '__root__' | '/' | '/con' | '/nocon' | '/state' | '/suspense'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConRoute: typeof ConRoute
   NoconRoute: typeof NoconRoute
+  StateRoute: typeof StateRoute
   SuspenseRoute: typeof SuspenseRoute
 }
 
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/suspense'
       fullPath: '/suspense'
       preLoaderRoute: typeof SuspenseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/state': {
+      id: '/state'
+      path: '/state'
+      fullPath: '/state'
+      preLoaderRoute: typeof StateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nocon': {
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConRoute: ConRoute,
   NoconRoute: NoconRoute,
+  StateRoute: StateRoute,
   SuspenseRoute: SuspenseRoute,
 }
 export const routeTree = rootRouteImport
