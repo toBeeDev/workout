@@ -16,6 +16,9 @@ export default function Header() {
         <div className="px-2 font-bold">
           <Link to="/suspense">Suspense</Link>
         </div>
+        <div className="px-2 font-bold">
+          <Link to="/state">State</Link>
+        </div>
       </nav>
     </header>
   )
